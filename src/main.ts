@@ -5,19 +5,23 @@ class Day {
     weather: number;
     supplyCost: number;   
     interest: number;
+    cups: number;
+    advertise: number;
 
 
     constructor() {
-        this.weather = Math.floor(Math.random() * (100))
-        this.supplyCost = (Math.random() * (.1 - .02 + 1))
-        this.interest = Math.floor(Math.random() * 100)
+        this.weather = Math.floor(Math.random() * (100));
+        this.supplyCost = (Math.random() * (.1 - .02 + 1));
+        this.interest = Math.floor(Math.random() * 100);
+        this.cups = 0;
+        this.advertise = 0;
     }
 }
 
-function StartGame() {
+async function StartGame() {
+    const rl = readline.createInterface({ input, output });
     let assets = 0;
-    let cups = 0;
-    let advertise = 0; 
+
     let whatDay = 1;
     let advance = true;
     let status = "sunny";
@@ -35,8 +39,14 @@ function StartGame() {
         else {
             status = "sunny"
         }
-    
-        console.log("on day " + day + " the cost of lemonade is " + day.supplyCost + " and the weather is" + status + "\n");
-        advance = false;
+        
+        console.log("on day " + whatDay + " the cost of lemonade is " + day.supplyCost + " and the weather is " + status + "\n");
+        console.log("Assets:" + assets + "\n");
+        const answer: string = await rl.question('How many glasses of lemonade do you want to make? ');
+        day.cups = Number(answer);
+
+        ++whatDay
     }
 }
+
+StartGame()
