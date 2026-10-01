@@ -98,7 +98,7 @@ async function StartGame() {
             mult = mult - .15;
         }
         mult = mult * (.25 * (day.advertise + 1));
-        let interestedBuy = Math.floor(20 * (mult));
+        let interestedBuy = Math.floor(20 * (mult) * Math.random() * 0.5);
         let sold = 0;
         if (interestedBuy > glassNum){
             sold = interestedBuy - (interestedBuy - glassNum);
