@@ -115,8 +115,9 @@ async function StartGame() {
         console.log("Amount Charged: " + chaNum + "\n")
         console.log("Cups Sold: " + sold + "\n")
         console.log("Income: "  + total + "\n")
-        const answer: string = await rl.question('press any to continue ');
         assets = assets + total;
+        console.log("Total: "  + assets + "\n")
+        const answer: string = await rl.question('press any to continue ');
         ++whatDay
     }
 }
