@@ -1,0 +1,5 @@
+as a player, I want the assets to be displayed and updated regularly so I can keep track of my spending
+
+as a player, I want a final report each day to show me my progress
+
+as a player, I want the game to keep continuing until I decide to quit
