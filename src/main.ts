@@ -11,7 +11,8 @@ class Day {
 
     constructor() {
         this.weather = Math.floor(Math.random() * (100));
-        this.supplyCost = 0.01 * Math.floor(Math.random() * 11);
+        this.supplyCost = 0.01 + 0.01 * Math.floor(Math.random() * 10) ;
+        this.supplyCost = Number(this.supplyCost.toFixed(2))
         this.cups = 0;
         this.advertise = 0;
         this.charge = 0;
@@ -39,9 +40,13 @@ async function StartGame() {
             status = "sunny"
         }
         
-        console.log("on day " + whatDay + " the cost of lemonade is " + day.supplyCost + " and the weather is " + status + "\n");
+        console.log("on day " + whatDay + " the total cost of making lemonade (lemons, sugar, ice, cups) " + day.supplyCost + " and the weather is " + status + "\n");
         console.log("Assets:" + assets + "\n");
-        
+        if (day.supplyCost > assets){
+            console.log("GAME OVER: cannot afford any more lemonade :(")
+            break;
+        }
+
         advance = false;
         let glassNum = 0;
         while (advance == false){
@@ -83,7 +88,7 @@ async function StartGame() {
         advance = false;
         while (advance == false){
             console.log("Assets:" + assets + "\n");
-            const answer: string = await rl.question('How much are you charging per cup ');
+            const answer: string = await rl.question('How much are you charging per cup?');
             chaNum = Number(answer)
             if (chaNum > 0 && chaNum < 100) {
                 advance = true;
@@ -97,22 +102,30 @@ async function StartGame() {
         if (status == "cloudy"){
             mult = mult - .15;
         }
-        mult = mult * (.25 * (day.advertise + 1));
-        let interestedBuy = Math.floor(20 * (mult) * Math.random() * 0.5);
+        mult = mult * (.15 * (day.advertise + 1));
+        let interestedBuy = Math.floor(20 * (mult) * (Math.random() + 0.5));
+        let max_customers = Math.min (interestedBuy, glassNum);
         let sold = 0;
-        if (interestedBuy > glassNum){
-            sold = interestedBuy - (interestedBuy - glassNum);
+        while (max_customers != 0){
+            let customerWillPay = ((Math.random()) + .10) + (Math.random() * (0.2) * mult);
+            if (day.charge <= customerWillPay){
+                ++sold; 
+                //console.log("sold!")
+            }  
+            else {
+                //console.log("too expensive!")
+            }
+            --max_customers
         } 
-        else{
-            sold = glassNum - interestedBuy
-        }
+
+        let leftover = interestedBuy - sold;
         let total = sold * chaNum
 
         console.log("====== DAY " + whatDay + " REPORT ====== \n");
         console.log("interested customers: " + interestedBuy + "\n" )
-        console.log("Advertisements made: " + advNum + "\n")
-        console.log("Cups made: " + glassNum + "\n")
-        console.log("Amount Charged: " + chaNum + "\n")
+        console.log("Advertisements made: " + day.advertise + "\n")
+        console.log("Cups made: " + day.cups + "\n")
+        console.log("Amount Charged: " + day.charge + "\n")
         console.log("Cups Sold: " + sold + "\n")
         console.log("Income: "  + total + "\n")
         assets = assets + total;
